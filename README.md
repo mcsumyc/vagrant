@@ -1,2 +1,2 @@
 # 1 lesson
-vagrant+paacker
+vagrant+packer
