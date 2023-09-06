@@ -1,1 +1,86 @@
 
+{
+"variables": {
+    "artifact_description": "CentOS Stream 8 with kernel 5.x",
+    "artifact_version": "8",
+    "image_name": "centos-8"
+  },
+
+"builders": [
+    {
+    
+"boot_command": [
+      "<tab>inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "boot_wait": "10s",
+
+      "disk_size": "10240",
+      "export_opts": [
+        "--manifest",
+        "--vsys",
+        "0",
+        "--description",
+        "{{user `artifact_description`}}",
+        "--version",
+        "{{user `artifact_version`}}"
+      ],
+      "guest_os_type": "RedHat_64",
+      "http_directory": "http",
+      "iso_checksum": "74f1779da2b7ea0e6f01de16a1dd28b11cf9d6b4727365a4730e666c44527588",
+      "iso_url": "http://mirror.linux-ia64.org/centos/8-stream/isos/x86_64/CentOS-Stream-8-20230830.0-x86_64-boot.iso",
+      "name": "{{user `image_name`}}",
+      "output_directory": "builds",
+      "shutdown_command": "echo 'vagrant\r' | sudo -S /sbin/halt -h -p",
+      "shutdown_timeout": "5m",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_pty": true,
+      "ssh_timeout": "40m",
+      "ssh_username": "vagrant",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "1024"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ]
+      ],
+      
+      "vm_name": "packer-centos-vm"
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "centos-8-kernel-5-x86_64-Minimal.box",
+      "compression_level": "7",    
+      "type": "vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",    
+      "execute_command": "{{.Vars}} echo 'vagrant\r' | sudo -S -E bash '{{.Path}}'",
+      "start_retry_timeout": "1m",
+      "expect_disconnect": true,
+      "pause_before": "20s",
+      "override": {
+        "{{user `image_name`}}": {
+          "scripts":         
+         [
+            "scripts/stage-1-kernel-update.sh",
+            "scripts/stage-2-clean.sh"
+          ]
+        }
+      }
+    }
+  ]
+  
+}
+
