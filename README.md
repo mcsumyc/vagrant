@@ -19,7 +19,7 @@
 
 ### **Oracle VirtualBox**
 Добавляем GPG-ключ репозитория: 
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+'wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -'
 
 Добавляем репозиторий VirtualBox: 
 sudo add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
