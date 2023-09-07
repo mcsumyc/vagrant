@@ -18,23 +18,33 @@
 - # **Установка ПО**
 
 ### **Oracle VirtualBox**
-Добавляем GPG-ключ репозитория: wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-Добавляем репозиторий VirtualBox: sudo add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
+Добавляем GPG-ключ репозитория: 
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+
+Добавляем репозиторий VirtualBox: 
+sudo add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
+
 Обновляем список пакетов: sudo apt update 
+
 Установим VirtualBox: sudo apt install -y virtualbox-6.1 
+
 Установим VirtualBox extension pack: sudo apt install -y virtualbox-ext-pack 
+
 (Во время установки потребуется принять лицензионное соглашение)
 На этом установка VirtualBox закончена.
 
 ### **Vagrant**
 
-Добавляем GPG-ключ репозитория: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-Добавляем репозиторий Hashicorp: sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+Добавляем GPG-ключ репозитория: 
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+
+Добавляем репозиторий Hashicorp: 
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+
 Обновляем список пакетов: sudo apt update
 Установим Vagrant: sudo apt install -y vagrant
-Проверим версию Vagrant: vagrant version \
-Версия Vagrant должна быть 2.2.17 или выше
-     На этом установка Hashicorp Vagrant завершена
+
+На этом установка Hashicorp Vagrant завершена
 
 ### **Packer**
 
