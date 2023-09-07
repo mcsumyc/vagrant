@@ -24,13 +24,21 @@ wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-
 '''
 
 Добавляем репозиторий VirtualBox: 
+'''
 sudo add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
+'''
 
 Обновляем список пакетов: sudo apt update 
 
-Установим VirtualBox: sudo apt install -y virtualbox-6.1 
+Установим VirtualBox:
+'''
+sudo apt install -y virtualbox-6.1 
+'''
 
-Установим VirtualBox extension pack: sudo apt install -y virtualbox-ext-pack 
+Установим VirtualBox extension pack: 
+'''
+sudo apt install -y virtualbox-ext-pack
+'''
 
 (Во время установки потребуется принять лицензионное соглашение)
 На этом установка VirtualBox закончена.
@@ -38,13 +46,23 @@ sudo add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtual
 ### **Vagrant**
 
 Добавляем GPG-ключ репозитория: 
+'''
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+'''
 
 Добавляем репозиторий Hashicorp: 
+'''
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+'''
 
-Обновляем список пакетов: sudo apt update
-Установим Vagrant: sudo apt install -y vagrant
+Обновляем список пакетов: 
+'''
+sudo apt update
+'''
+Установим Vagrant: 
+'''
+sudo apt install -y vagrant
+'''
 
 На этом установка Hashicorp Vagrant завершена
 
@@ -52,8 +70,14 @@ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(l
 
 Packer также можно установить из репозитория Hashicorp
 
-Установим packer: sudo apt install -y packer
-Проверим версию packer: packer --version
+Установим packer: 
+'''
+sudo apt install -y packer
+'''
+Проверим версию packer: 
+'''
+packer --version
+'''
 
 После успешного окончания будет установлен Packer.
 
@@ -65,18 +89,24 @@ Packer также можно установить из репозитория Ha
 Подключаемся по ssh к созданной виртуальной машины. Для этого в каталоге с нашим Vagrantfile вводим команду vagrant ssh 
 
 Перед работами проверим текущую версию ядра:
+'''
 [vagrant@kernel-update ~]$ uname -r
 4.18.0-277.el8.x86_64
+'''
 
 Далее подключим репозиторий, откуда возьмём необходимую версию ядра:
+'''
 sudo yum install -y https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm 
+'''
 
 В репозитории есть две версии ядер:
 kernel-ml — свежие и стабильные ядра
 kernel-lt — стабильные ядра с длительной версией поддержки, более старые, чем версия ml.
 
 Установим последнее ядро из репозитория elrepo-kernel:
+'''
 sudo yum --enablerepo elrepo-kernel install kernel-ml -y
+'''
 
 Параметр --enablerepo elrepo-kernel указывает что пакет ядра будет запрошен из репозитория elrepo-kernel.
 
@@ -84,15 +114,21 @@ sudo yum --enablerepo elrepo-kernel install kernel-ml -y
 
 Если требуется, можно назначить новое ядро по-умолчанию вручную:
 1) Обновить конфигурацию загрузчика:
+   '''
    sudo grub2-mkconfig -o /boot/grub2/grub.cfg
-2) Выбрать загрузку нового ядра по-умолчанию:
+   '''
+3) Выбрать загрузку нового ядра по-умолчанию:
+4) '''
    sudo grub2-set-default 0
+   '''
 
 Далее перезагружаем нашу виртуальную машину с помощью команды sudo reboot
 
 После перезагрузки снова проверяем версию ядра (версия должа стать новее):
+'''
 [vagrant@kernel-update ~]$ uname -r 
 6.5.1-1.el8.elrepo.x86_64
+'''
 
 На этом обновление ядра закончено
 
@@ -100,7 +136,10 @@ sudo yum --enablerepo elrepo-kernel install kernel-ml -y
 
 Теперь необходимо создать свой образ системы, с уже установленым ядром 6й версии. Для это воспользуемся ранее установленной утилитой `packer`. В директории `packer` создаем все необходимые настройки (файл centos.json & ks.cgf)и скрипты (папка scripts) для создания необходимого образа системы.
 
-Cоздадим образ системы с помощью команды: packer build centos.json
+Cоздадим образ системы с помощью команды:
+'''
+packer build centos.json
+'''
 
 После успешного создания образа в Packer выдаст следующее сообщение:
 ==> Builds finished. The artifacts of successful builds are:
@@ -111,9 +150,10 @@ Cоздадим образ системы с помощью команды: pack
 # **Vagrant cloud**
 
 Публикация образа:
-
+'''
 vagrant cloud auth login
 vagrant cloud publish --release petriaevmaksim/centos8-kernel5 1.0 virtualbox centos-8-kernel-5-x86_64-Minimal.box
+'''
 
 # **Заключение**
 
