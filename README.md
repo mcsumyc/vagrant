@@ -141,8 +141,10 @@ Cоздадим образ системы с помощью команды:
 
 
 После успешного создания образа в Packer выдаст следующее сообщение:
+```
 ==> Builds finished. The artifacts of successful builds are:
---> centos-8: 'virtualbox' provider box: centos-8-kernel-5-x86_64-Minimal.box 
+--> centos-8: 'virtualbox' provider box: centos-8-kernel-5-x86_64-Minimal.box
+```
 
 Также после успешного создания образа в каталоге packer появился файл сentos-8-kernel-5-x86_64-Minimal.box
 
